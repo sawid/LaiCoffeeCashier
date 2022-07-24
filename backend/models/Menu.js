@@ -7,12 +7,12 @@ const MenuSchema = new mongoose.Schema({
         menuPrice:{
                 type:Number
         },
+        menuSection:{
+                type:String
+        },
         menuStatus:{
                 type:Boolean,
                 default:true
-        },
-        menuSection:{
-                type:String
         },
         menuImages:{
                 type:String
