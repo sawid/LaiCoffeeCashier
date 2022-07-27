@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Col, Container, Row, Card, Modal } from "react-bootstrap";
+import { Button, Col, Container, Row, Card, Modal, Form } from "react-bootstrap";
 import { BsFillTrashFill } from "react-icons/bs";
 import InputSpinner from "react-bootstrap-input-spinner";
 import { listMenu } from "../../functions/menu";
@@ -40,7 +40,7 @@ const Cashier = () => {
   };
 
 
-  console.log(dataListMenuSection);
+  // console.log(dataListMenuSection);
 
   // useEffect Action
   useEffect(() => {
@@ -202,6 +202,7 @@ const Cashier = () => {
           <Modal.Title>เพิ่มรายการ {dataModal.menuName}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+        <Form.Label>จำนวน</Form.Label>
           <InputSpinner
             type={"real"}
             precision={0}
@@ -213,6 +214,12 @@ const Cashier = () => {
             variant={"dark"}
             size="md"
           />
+          <Form className="mt-2">
+            <Form.Group>
+              <Form.Label>หมายเหตุ</Form.Label>
+              <Form.Control size="md" type="text" placeholder="รายละเอียด" />
+            </Form.Group>
+          </Form>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
