@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Button, Col, Container, Row, Card, Modal } from "react-bootstrap";
+import { BsFillTrashFill } from "react-icons/bs";
 import InputSpinner from "react-bootstrap-input-spinner";
 import { listMenu } from "../../functions/menu";
 
@@ -14,16 +15,30 @@ const Cashier = () => {
   const [dataSelectedMenu, setDataSelectedMenu] = useState([]);
   // Modal
   const [show, setShow] = useState(false);
+  const [showModalDelete, setShowModalDelete] = useState(false);
   const [dataModal, setDataModal] = useState({ menuName: "", menuId: "" });
+  const [dataModalDelete, setDataModalDelete] = useState({ menuName: "", menuId: "" });
   const [numberMenu, setNumberMenu] = useState(1);
+
   const handleClose = () => {
     setShow(false);
   };
+  
   const handleShow = (menuName, menuId) => {
     setDataModal({ menuName: menuName, menuId: menuId });
     setShow(true);
-    console.log(dataModal);
+    // console.log(dataModal);
   };
+
+  const handleCloseModalDelete = () => {
+    setShowModalDelete(false);
+  };
+
+  const handleShowModalDelete = (menuName, menuId) => {
+    setDataModalDelete({ menuName: menuName, menuId: menuId });
+    setShowModalDelete(true);
+  };
+
 
   console.log(dataListMenuSection);
 
@@ -65,14 +80,14 @@ const Cashier = () => {
     );
   };
 
-  const handleClickMenuName = (data, numberMenu) => {
+  const handleClickMenuName = (menuName, menuId, numberMenu) => {
     if (
       dataSelectedMenu.find((element) => {
-        return element.menuName === data;
+        return element.menuName === menuName;
       })
     ) {
       const newState = dataSelectedMenu.map((item) => {
-        if (item.menuName === data) {
+        if (item.menuName === menuName) {
           var totalNumberMenu = item.menuAmount + numberMenu
           return { ...item, menuAmount: totalNumberMenu };
         }
@@ -82,7 +97,7 @@ const Cashier = () => {
     } else {
       setDataSelectedMenu((prev) => [
         ...prev,
-        { menuName: data, menuId: data, menuAmount: numberMenu },
+        { menuName: menuName, menuId: menuId, menuAmount: numberMenu },
       ]);
     }
     setShow(false);
@@ -91,6 +106,12 @@ const Cashier = () => {
 
   const handleClickShowList = () => {
     setDataListMenuShow(dataListMenu);
+  };
+
+  const handleRemoveSelectedMenu = (menuId) => {
+    const newStateRemove = dataSelectedMenu.filter((item) => item.menuId !== menuId);
+    setDataSelectedMenu(newStateRemove);
+    setShowModalDelete(false)
   };
 
   return (
@@ -154,10 +175,15 @@ const Cashier = () => {
                 {dataSelectedMenu.map((item, index) => (
                   <Card.Text>
                     <Row>
-                      <Col> {item.menuName} </Col>
+                      <Col md={3}> {item.menuName} </Col>
                       <Col className="align-items-end">
                         {" "}
                         จำนวน {item.menuAmount}{" "}
+                      </Col>
+                      <Col md={3} className="text-right">
+                      <Button size="sm" variant="danger" onClick={() => handleShowModalDelete(item.menuName, item.menuId)}>
+                        <BsFillTrashFill/> ลบเมนู
+                      </Button>
                       </Col>
                     </Row>
                   </Card.Text>
@@ -173,7 +199,7 @@ const Cashier = () => {
 
       <Modal className="font-sarabun" show={show} onHide={handleClose}>
         <Modal.Header>
-          <Modal.Title>เพิ่มเมนู {dataModal.menuName}</Modal.Title>
+          <Modal.Title>เพิ่มรายการ {dataModal.menuName}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <InputSpinner
@@ -194,9 +220,28 @@ const Cashier = () => {
           </Button>
           <Button
             variant="primary"
-            onClick={() => handleClickMenuName(dataModal.menuName, numberMenu)}
+            onClick={() => handleClickMenuName(dataModal.menuName, dataModal.menuId, numberMenu)}
           >
             เพิ่มเมนู
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <Modal className="font-sarabun" show={showModalDelete} onHide={handleClose}>
+        <Modal.Header>
+          <Modal.Title>ลบรายการ {dataModalDelete.menuName}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          ยืนยันการลบเมนู
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => handleCloseModalDelete()}>
+            ปิด
+          </Button>
+          <Button
+            variant="danger"
+            onClick={() => handleRemoveSelectedMenu(dataModalDelete.menuId)}
+          >
+            ลบเมนู
           </Button>
         </Modal.Footer>
       </Modal>
