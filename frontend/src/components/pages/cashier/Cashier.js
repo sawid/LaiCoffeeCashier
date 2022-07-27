@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Button, Col, Container, Row, Card, Modal } from "react-bootstrap";
+import InputSpinner from "react-bootstrap-input-spinner";
 import { listMenu } from "../../functions/menu";
 
 import { listMenuSection } from "../../functions/menusection";
@@ -13,13 +14,15 @@ const Cashier = () => {
   const [dataSelectedMenu, setDataSelectedMenu] = useState([]);
   // Modal
   const [show, setShow] = useState(false);
-  const [dataModal, setDataModal] = useState([]);
+  const [dataModal, setDataModal] = useState({ menuName: "", menuId: "" });
+  const [numberMenu, setNumberMenu] = useState(1);
   const handleClose = () => {
     setShow(false);
   };
-  const handleShow = () => {
-    // setDataModal({ menuName: menuName, menuId: menuId });
+  const handleShow = (menuName, menuId) => {
+    setDataModal({ menuName: menuName, menuId: menuId });
     setShow(true);
+    console.log(dataModal);
   };
 
   console.log(dataListMenuSection);
@@ -62,8 +65,28 @@ const Cashier = () => {
     );
   };
 
-  const handleClickMenuName = (data) => {
-    setDataSelectedMenu((prev) => [...prev, { menuName: data, menuId: data }]);
+  const handleClickMenuName = (data, numberMenu) => {
+    if (
+      dataSelectedMenu.find((element) => {
+        return element.menuName === data;
+      })
+    ) {
+      const newState = dataSelectedMenu.map((item) => {
+        if (item.menuName === data) {
+          var totalNumberMenu = item.menuAmount + numberMenu
+          return { ...item, menuAmount: totalNumberMenu };
+        }
+        return item;
+      });
+      setDataSelectedMenu(newState);
+    } else {
+      setDataSelectedMenu((prev) => [
+        ...prev,
+        { menuName: data, menuId: data, menuAmount: numberMenu },
+      ]);
+    }
+    setShow(false);
+    setNumberMenu(1);
   };
 
   const handleClickShowList = () => {
@@ -82,7 +105,7 @@ const Cashier = () => {
                   size="lg"
                   onClick={() => handleClickShowList()}
                 >
-                  แสดงทั้งหมด add data
+                  แสดงทั้งหมด
                 </Button>
                 {"   "}
                 {dataListMenuSection.map((item, index) => (
@@ -103,7 +126,7 @@ const Cashier = () => {
               {dataListMenuShow.map((item, index) => (
                 <Col md={2}>
                   <Card
-                    onClick={() => handleShow()}
+                    onClick={() => handleShow(item.menuName, item._id)}
                     style={{ cursor: "pointer" }}
                   >
                     <Card.Img
@@ -132,7 +155,10 @@ const Cashier = () => {
                   <Card.Text>
                     <Row>
                       <Col> {item.menuName} </Col>
-                      <Col className="align-items-end"> จำนวน 1 2 3 </Col>
+                      <Col className="align-items-end">
+                        {" "}
+                        จำนวน {item.menuAmount}{" "}
+                      </Col>
                     </Row>
                   </Card.Text>
                 ))}
@@ -144,22 +170,36 @@ const Cashier = () => {
         </Row>
       </Container>
       {/* Modal */}
-      
-        <Modal show={show} onHide={handleClose}>
-          <Modal.Header>
-            <Modal.Title></Modal.Title>
-          </Modal.Header>
-          <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Close
-            </Button>
-            <Button variant="primary" onClick={handleClose}>
-              Save Changes
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      
+
+      <Modal className="font-sarabun" show={show} onHide={handleClose}>
+        <Modal.Header>
+          <Modal.Title>เพิ่มเมนู {dataModal.menuName}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <InputSpinner
+            type={"real"}
+            precision={0}
+            max={10}
+            min={1}
+            step={1}
+            value={numberMenu}
+            onChange={(num) => setNumberMenu(num)}
+            variant={"dark"}
+            size="md"
+          />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            ปิด
+          </Button>
+          <Button
+            variant="primary"
+            onClick={() => handleClickMenuName(dataModal.menuName, numberMenu)}
+          >
+            เพิ่มเมนู
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };
