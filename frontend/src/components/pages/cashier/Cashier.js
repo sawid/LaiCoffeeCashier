@@ -80,14 +80,14 @@ const Cashier = () => {
     );
   };
 
-  const handleClickMenuName = (menuName, menuId, numberMenu) => {
+  const handleClickMenuAddSelect = (menuName, menuId, numberMenu) => {
     if (
       dataSelectedMenu.find((element) => {
-        return element.menuName === menuName;
+        return element.menuId === menuId;
       })
     ) {
       const newState = dataSelectedMenu.map((item) => {
-        if (item.menuName === menuName) {
+        if (item.menuId === menuId) {
           var totalNumberMenu = item.menuAmount + numberMenu
           return { ...item, menuAmount: totalNumberMenu };
         }
@@ -227,7 +227,7 @@ const Cashier = () => {
           </Button>
           <Button
             variant="primary"
-            onClick={() => handleClickMenuName(dataModal.menuName, dataModal.menuId, numberMenu)}
+            onClick={() => handleClickMenuAddSelect(dataModal.menuName, dataModal.menuId, numberMenu)}
           >
             เพิ่มเมนู
           </Button>
