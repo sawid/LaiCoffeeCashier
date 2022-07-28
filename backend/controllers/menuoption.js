@@ -2,14 +2,15 @@ const MenuOption = require('../models/MenuOption');
 
 exports.addMenuOption = async (req, res) => {
         try {
-                const { menuOptionName, menuOptionChoice } = req.body;
+                const { menuOptionName, menuType, menuOptionChoice } = req.body;
                 var menuoption = await MenuOption.findOne({menuOptionName})
                 if (menuoption) {
                         res.status(400).send('Menu Option Already Exists');    
                 }
                 else {
                         menuoption = new MenuOption({
-                                menuOptionName, 
+                                menuOptionName,
+                                menuType,
                                 menuOptionChoice,
                         });
                         await menuoption.save();
