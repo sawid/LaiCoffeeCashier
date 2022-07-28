@@ -20,6 +20,9 @@ const Cashier = () => {
   const [dataModalDelete, setDataModalDelete] = useState({ menuName: "", menuId: "" });
   const [numberMenu, setNumberMenu] = useState(1);
 
+  // Temporary Data
+  const [dataMenuMemo, setDataMenuMemo] = useState({ menuMemo : "" });
+
   const handleClose = () => {
     setShow(false);
   };
@@ -71,6 +74,7 @@ const Cashier = () => {
   };
 
   //Handling Event
+  //OnClick Event
   const handleClickSort = (data) => {
     setDataListMenuShow(dataListMenu);
     setDataListMenuShow((dataCurrent) =>
@@ -80,7 +84,7 @@ const Cashier = () => {
     );
   };
 
-  const handleClickMenuAddSelect = (menuName, menuId, numberMenu) => {
+  const handleClickMenuAddSelect = (menuName, menuId, numberMenu, menuMemo) => {
     if (
       dataSelectedMenu.find((element) => {
         return element.menuId === menuId;
@@ -97,7 +101,7 @@ const Cashier = () => {
     } else {
       setDataSelectedMenu((prev) => [
         ...prev,
-        { menuName: menuName, menuId: menuId, menuAmount: numberMenu },
+        { menuName: menuName, menuId: menuId, menuAmount: numberMenu, menuMemo: menuMemo },
       ]);
     }
     setShow(false);
@@ -114,6 +118,11 @@ const Cashier = () => {
     setShowModalDelete(false)
   };
 
+  //onChange Event
+  const handleChangeInputMenuMemo = (e) => {
+    setDataMenuMemo({...dataMenuMemo, [e.target.name]:e.target.value });
+  }
+  console.log(dataMenuMemo)
   return (
     <div>
       <Container fluid={true}>
@@ -175,7 +184,7 @@ const Cashier = () => {
                 {dataSelectedMenu.map((item, index) => (
                   <Card.Text>
                     <Row>
-                      <Col md={3}> {item.menuName} </Col>
+                      <Col md={3}> {item.menuName} *{item.menuMemo}</Col>
                       <Col className="align-items-end">
                         {" "}
                         จำนวน {item.menuAmount}{" "}
@@ -217,7 +226,7 @@ const Cashier = () => {
           <Form className="mt-2">
             <Form.Group>
               <Form.Label>หมายเหตุ</Form.Label>
-              <Form.Control size="md" type="text" placeholder="รายละเอียด" />
+              <Form.Control name="menuMemo" size="md" type="text" placeholder="รายละเอียด" onChange={(e) => handleChangeInputMenuMemo(e)} />
             </Form.Group>
           </Form>
         </Modal.Body>
@@ -227,7 +236,7 @@ const Cashier = () => {
           </Button>
           <Button
             variant="primary"
-            onClick={() => handleClickMenuAddSelect(dataModal.menuName, dataModal.menuId, numberMenu)}
+            onClick={() => handleClickMenuAddSelect(dataModal.menuName, dataModal.menuId, numberMenu, dataMenuMemo.menuMemo)}
           >
             เพิ่มเมนู
           </Button>
