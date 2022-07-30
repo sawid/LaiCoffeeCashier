@@ -14,6 +14,9 @@ const MenuSchema = new mongoose.Schema({
                 type:Boolean,
                 default:true
         },
+        menuOption:{
+                type:Array,
+        },
         menuImages:{
                 type:String
         },

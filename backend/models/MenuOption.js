@@ -10,7 +10,7 @@ const MenuOptionSchema = new mongoose.Schema({
                 type:String,
         },
         menuType: {
-                type:String,
+                type:Number,
         },
         menuOptionChoice: [cellOptionChoiceSchema],
 })
