@@ -21,3 +21,18 @@ exports.addMenuOption = async (req, res) => {
                 res.status(500).send('Server Error')
         }
 }
+
+exports.listMenuOption = async (req, res) => {
+        try {
+                var menuoption = await MenuOption.find()
+                if (!menuoption) {
+                        res.status(400).send('Menu List Not Exists');    
+                }
+                else {
+                        res.send(menuoption);
+                }
+        } catch (error) {
+                console.log(error)
+                res.status(500).send('Server Error')
+        }
+}

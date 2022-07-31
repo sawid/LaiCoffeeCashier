@@ -20,6 +20,7 @@ const Cashier = () => {
   const [dataListMenuSection, setDataListMenuSection] = useState([]);
   const [dataListMenuShow, setDataListMenuShow] = useState([]);
   const [dataListMenu, setDataListMenu] = useState([]);
+  // Data On Page
   const [dataSelectedMenu, setDataSelectedMenu] = useState([]);
   // Modal
   const [show, setShow] = useState(false);
@@ -121,7 +122,7 @@ const Cashier = () => {
     }
     setShow(false);
     setNumberMenu(1);
-    setDataMenuMemo({ menuMemo: "" })
+    setDataMenuMemo({ menuMemo: "" });
   };
 
   const handleClickShowList = () => {
@@ -204,10 +205,11 @@ const Cashier = () => {
                     <Row>
                       <Col md={4}>
                         <Col>{item.menuName}</Col>
-                        {item.menuMemo.length === 0 ? 
-                        <React.Fragment></React.Fragment> : <Col className="text-warning"> * {item.menuMemo}</Col>
-                      }
-                        
+                        {item.menuMemo.length === 0 ? (
+                          <React.Fragment></React.Fragment>
+                        ) : (
+                          <Col className="text-warning"> * {item.menuMemo}</Col>
+                        )}
                       </Col>
                       <Col className="align-items-end">
                         {" "}
@@ -253,6 +255,38 @@ const Cashier = () => {
             variant={"dark"}
             size="md"
           />
+          <Form className="mt-2">
+            <Form.Group>
+              <Form.Label>เลือกขนาดแก้ว</Form.Label>
+              <Form.Check
+                type={'radio'}
+                id={"data"}
+                name="group1"
+                label={"ใหญ่"}
+              />
+              <Form.Check
+                type={'radio'}
+                id={"data"}
+                name="group1"
+                label={"เล็ก"}
+              />
+            </Form.Group>
+          </Form>
+          <Form className="mt-2">
+            <Form.Group>
+              <Form.Label>เลือกท็อปปิ้ง</Form.Label>
+              <Form.Check
+                type={'checkbox'}
+                id={"data"}
+                label={"น้ำตาล"}
+              />
+              <Form.Check
+                type={'checkbox'}
+                id={"data"}
+                label={"มะนาว"}
+              />
+            </Form.Group>
+          </Form>
           <Form className="mt-2">
             <Form.Group>
               <Form.Label>หมายเหตุ</Form.Label>
