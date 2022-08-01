@@ -46,12 +46,23 @@ const Cashier = () => {
   const handleShow = (menuName, menuId, menuOption) => {
     setDataModal({ menuName: menuName, menuId: menuId, menuOption: menuOption });
     setDataSelectedMenuOption(menuOption.map(item => {
-      return {checkedId: item, checkedStatus: false, checkedText:""}
+      const queryMenuType = dataListMenuOption.filter((element) => {
+        if(element._id === item) {
+          return element.menuType
+        }
+      })
+      if(queryMenuType[0].menuType === 1) {
+        return {checkedId: item, checkedStatus: false, checkedText:""}
+      }
+      else {
+      return {checkedId: item, checkedStatus: false, checkedText:[]}
+    }
     }))
     setShow(true);
     // console.log(dataModal);
   };
   // console.log(dataListMenuOption)
+  // console.log(dataSelectedMenuOption)
 
   const handleCloseModalDelete = () => {
     setShowModalDelete(false);
@@ -161,8 +172,29 @@ const Cashier = () => {
     setDataMenuMemo({ ...dataMenuMemo, [e.target.name]: e.target.value });
   };
 
-  const handleChangeRadioButton = (e) => {
-    alert(e);
+  const handleChangeUpdateSelectedOption = (menuOptionId, menuOptionType, menuOptionName) => {
+    // console.log(menuOptionId, menuOptionType, menuOptionName);
+    dataSelectedMenuOption.map(item => {
+      
+      if (item.checkedId === menuOptionId) {
+        // console.log(item)
+        if (menuOptionType === 1) {
+          if (menuOptionName === item.checkedText) {
+            // setDataSelectedMenuOption({ ...item, checkedText: ""})
+            // console.log(item ,menuOptionName)
+          }
+          else if (item.checkedText === "") {
+            const tempCheckId = item.checkedId
+            const newStateSet = dataSelectedMenuOption.map(currentItem => {
+              return currentItem.checkedId === item.checkedId ? "natch" : "unmatch";
+            })
+            console.log(newStateSet)
+            // setDataSelectedMenuOption(newStateSet)
+            // console.log(item ,menuOptionName)
+          }
+        }
+      }
+    })
   }
 
   // console.log(dataMenuMemo);
@@ -296,6 +328,7 @@ const Cashier = () => {
                     id={element._id}
                     name={querydata._id}
                     label={element.menuOptionChoiceName}
+                    onClick={() => handleChangeUpdateSelectedOption(querydata._id, querydata.menuType, element.menuOptionChoiceName)}
                   />
                   ))
                 }
