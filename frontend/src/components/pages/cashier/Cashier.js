@@ -290,10 +290,11 @@ const Cashier = () => {
               <Form.Group>
                 <Form.Label>เลือก {querydata.menuOptionName}</Form.Label>
                 {
-                  querydata.menuOptionChoice.map(element => (
+                  querydata.menuOptionChoice.map((element, index) => (
                     <Form.Check
                     type={ querydata.menuType === 2 ? "checkbox" : "radio" }
-                    id={"data"}
+                    id={element._id}
+                    name={querydata._id}
                     label={element.menuOptionChoiceName}
                   />
                   ))
