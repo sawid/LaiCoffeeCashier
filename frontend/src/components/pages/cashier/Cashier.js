@@ -13,19 +13,23 @@ import InputSpinner from "react-bootstrap-input-spinner";
 import { listMenu } from "../../functions/menu";
 
 import { listMenuSection } from "../../functions/menusection";
+import { listMenuOption } from "../../functions/menuoption";
 
 const Cashier = () => {
   // Initial Variable
   // Data Fetch Variable
   const [dataListMenuSection, setDataListMenuSection] = useState([]);
+  const [dataListMenuOption, setDataListMenuOption] = useState([]);
   const [dataListMenuShow, setDataListMenuShow] = useState([]);
   const [dataListMenu, setDataListMenu] = useState([]);
   // Data On Page
   const [dataSelectedMenu, setDataSelectedMenu] = useState([]);
+  const [dataSelectedMenuOption, setDataSelectedMenuOption] = useState([]);
+
   // Modal
   const [show, setShow] = useState(false);
   const [showModalDelete, setShowModalDelete] = useState(false);
-  const [dataModal, setDataModal] = useState({ menuName: "", menuId: "" });
+  const [dataModal, setDataModal] = useState({ menuName: "", menuId: "", menuOption:[] });
   const [dataModalDelete, setDataModalDelete] = useState({
     menuName: "",
     menuId: "",
@@ -39,11 +43,15 @@ const Cashier = () => {
     setShow(false);
   };
 
-  const handleShow = (menuName, menuId) => {
-    setDataModal({ menuName: menuName, menuId: menuId });
+  const handleShow = (menuName, menuId, menuOption) => {
+    setDataModal({ menuName: menuName, menuId: menuId, menuOption: menuOption });
+    setDataSelectedMenuOption(menuOption.map(item => {
+      return {checkedId: item, checkedStatus: false, checkedText:""}
+    }))
     setShow(true);
     // console.log(dataModal);
   };
+  // console.log(dataListMenuOption)
 
   const handleCloseModalDelete = () => {
     setShowModalDelete(false);
@@ -59,12 +67,13 @@ const Cashier = () => {
   // useEffect Action
   useEffect(() => {
     loadDataMenuSection();
+    loadDataMenuOption();
     loadDataMenu();
   }, []);
 
   // Fetch Data
   const loadDataMenuSection = () => {
-    listMenuSection()
+      listMenuSection()
       .then((res) => {
         setDataListMenuSection(res.data);
       })
@@ -73,8 +82,18 @@ const Cashier = () => {
       });
   };
 
+  const loadDataMenuOption = () => {
+      listMenuOption()
+      .then((res) => {
+        setDataListMenuOption(res.data);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
+  };
+
   const loadDataMenu = () => {
-    listMenu()
+      listMenu()
       .then((res) => {
         setDataListMenu(res.data);
         setDataListMenuShow(res.data);
@@ -141,7 +160,12 @@ const Cashier = () => {
   const handleChangeInputMenuMemo = (e) => {
     setDataMenuMemo({ ...dataMenuMemo, [e.target.name]: e.target.value });
   };
-  console.log(dataMenuMemo);
+
+  const handleChangeRadioButton = (e) => {
+    alert(e);
+  }
+
+  // console.log(dataMenuMemo);
   return (
     <div>
       <Container fluid={true}>
@@ -175,7 +199,7 @@ const Cashier = () => {
               {dataListMenuShow.map((item, index) => (
                 <Col md={2}>
                   <Card
-                    onClick={() => handleShow(item.menuName, item._id)}
+                    onClick={() => handleShow(item.menuName, item._id, item.menuOption)}
                     style={{ cursor: "pointer" }}
                   >
                     <Card.Img
@@ -255,38 +279,33 @@ const Cashier = () => {
             variant={"dark"}
             size="md"
           />
-          <Form className="mt-2">
-            <Form.Group>
-              <Form.Label>เลือกขนาดแก้ว</Form.Label>
-              <Form.Check
-                type={'radio'}
-                id={"data"}
-                name="group1"
-                label={"ใหญ่"}
-              />
-              <Form.Check
-                type={'radio'}
-                id={"data"}
-                name="group1"
-                label={"เล็ก"}
-              />
-            </Form.Group>
-          </Form>
-          <Form className="mt-2">
-            <Form.Group>
-              <Form.Label>เลือกท็อปปิ้ง</Form.Label>
-              <Form.Check
-                type={'checkbox'}
-                id={"data"}
-                label={"น้ำตาล"}
-              />
-              <Form.Check
-                type={'checkbox'}
-                id={"data"}
-                label={"มะนาว"}
-              />
-            </Form.Group>
-          </Form>
+          {
+            dataSelectedMenuOption.map(item => {
+              const querydata = dataListMenuOption.find(element => {
+                if(item.checkedId === element._id) {
+                  return element
+                }
+              })
+              return <Form className="mt-2">
+              <Form.Group>
+                <Form.Label>เลือก {querydata.menuOptionName}</Form.Label>
+                {
+                  querydata.menuOptionChoice.map(element => (
+                    <Form.Check
+                    type={ querydata.menuType === 2 ? "checkbox" : "radio" }
+                    id={"data"}
+                    label={element.menuOptionChoiceName}
+                  />
+                  ))
+                }
+               
+                
+              </Form.Group>
+            </Form>
+            })
+          }
+          
+          
           <Form className="mt-2">
             <Form.Group>
               <Form.Label>หมายเหตุ</Form.Label>
