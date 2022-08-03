@@ -181,12 +181,12 @@ const Cashier = () => {
         if (menuOptionType === 1) {
           if (menuOptionName === item.checkedText) {
             // setDataSelectedMenuOption({ ...item, checkedText: ""})
-            // console.log(item ,menuOptionName)
+            // console.log(item ,menfuOptionName)ff
           }
           else if (item.checkedText === "") {
             const tempCheckId = item.checkedId
             const newStateSet = dataSelectedMenuOption.map(currentItem => {
-              return currentItem.checkedId === item.checkedId ? "natch" : "unmatch";
+              return currentItem.checkedId === item.checkedId ? "match" : "unmatch";
             })
             console.log(newStateSet)
             // setDataSelectedMenuOption(newStateSet)
