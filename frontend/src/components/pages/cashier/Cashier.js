@@ -25,7 +25,6 @@ const Cashier = () => {
   // Data On Page
   const [dataSelectedMenu, setDataSelectedMenu] = useState([]);
   const [dataSelectedMenuOption, setDataSelectedMenuOption] = useState([]);
-  const [querySearchUpdateSelectedOption, setQuerySearchUpdateSelectedOption] = useState([])
 
   // Modal
   const [show, setShow] = useState(false);
@@ -216,6 +215,22 @@ const Cashier = () => {
       // })
     // })
   }
+
+  const handleUncheckedRadioButton = (checkedId, menuOptionName) => {
+    var datalog = false
+    dataSelectedMenuOption.map(item => {
+      if (item.checkedId === checkedId) {
+        if (item.checkedText === menuOptionName) {
+          datalog = true
+        }
+        else {
+          datalog = false
+        }
+      }
+    })
+    return datalog
+  }
+
   console.log(dataSelectedMenuOption[0])
 
   // console.log(dataMenuMemo);
@@ -349,6 +364,7 @@ const Cashier = () => {
                     id={element._id}
                     name={querydata._id}
                     label={element.menuOptionChoiceName}
+                    checked={ querydata.menuType === 1 ? handleUncheckedRadioButton(querydata._id, element.menuOptionChoiceName) : ""}
                     onClick={() => handleChangeUpdateSelectedOption(querydata._id, querydata.menuType, element.menuOptionChoiceName)}
                   />
                   ))
