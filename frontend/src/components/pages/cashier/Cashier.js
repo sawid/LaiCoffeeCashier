@@ -25,6 +25,7 @@ const Cashier = () => {
   // Data On Page
   const [dataSelectedMenu, setDataSelectedMenu] = useState([]);
   const [dataSelectedMenuOption, setDataSelectedMenuOption] = useState([]);
+  const [querySearchUpdateSelectedOption, setQuerySearchUpdateSelectedOption] = useState([])
 
   // Modal
   const [show, setShow] = useState(false);
@@ -184,18 +185,22 @@ const Cashier = () => {
             // console.log(item ,menfuOptionName)ff
           }
           else if (item.checkedText === "") {
-            const tempCheckId = item.checkedId
-            const newStateSet = dataSelectedMenuOption.map(currentItem => {
-              return currentItem.checkedId === item.checkedId ? "match" : "unmatch";
-            })
-            console.log(newStateSet)
+            setQuerySearchUpdateSelectedOption({ checkedId: item.checkedId, menuOptionName: menuOptionName})
+            // setDataSelectedMenuOption(currentItem => {
+              // currentItem.map(itemOption => {
+                // if (itemOption.checkedId === item.checkedId) {
+                  // return { ...itemOption, checkedText: menuOptionName }
+                // }
+                // return itemOption;
+              // })
+            // })
             // setDataSelectedMenuOption(newStateSet)
-            // console.log(item ,menuOptionName)
           }
         }
       }
     })
   }
+  console.log(querySearchUpdateSelectedOption)
 
   // console.log(dataMenuMemo);
   return (
