@@ -175,7 +175,7 @@ const Cashier = () => {
 
   const handleChangeUpdateSelectedOption = (menuOptionId, menuOptionType, menuOptionName) => {
     // console.log(menuOptionId, menuOptionType, menuOptionName);
-    dataSelectedMenuOption.map(item => {
+    const setNewStateData = dataSelectedMenuOption.map(item => {
       
       if (item.checkedId === menuOptionId) {
         // console.log(item)
@@ -183,9 +183,11 @@ const Cashier = () => {
           if (menuOptionName === item.checkedText) {
             // setDataSelectedMenuOption({ ...item, checkedText: ""})
             // console.log(item ,menfuOptionName)ff
+            return { ...item, checkedText: "" }
           }
           else if (item.checkedText === "") {
-            setQuerySearchUpdateSelectedOption({ checkedId: item.checkedId, menuOptionName: menuOptionName})
+            return { ...item, checkedText: menuOptionName }
+            // setQuerySearchUpdateSelectedOption({ checkedId: item.checkedId, menuOptionName: menuOptionName})
             // setDataSelectedMenuOption(currentItem => {
               // currentItem.map(itemOption => {
                 // if (itemOption.checkedId === item.checkedId) {
@@ -195,12 +197,26 @@ const Cashier = () => {
               // })
             // })
             // setDataSelectedMenuOption(newStateSet)
+            
+          }
+          else if (menuOptionName !== item.checkedText) {
+            return { ...item, checkedText: menuOptionName }
           }
         }
       }
+      return item
     })
+    setDataSelectedMenuOption(setNewStateData)
+    // setDataSelectedMenuOption(currentItem => {
+      // currentItem.map(itemOption => {
+        // if (itemOption.checkedId === querySearchUpdateSelectedOption.checkedId) {
+          // return { ...itemOption, checkedId: menuOptionName }
+        // }
+        // return itemOption
+      // })
+    // })
   }
-  console.log(querySearchUpdateSelectedOption)
+  console.log(dataSelectedMenuOption[0])
 
   // console.log(dataMenuMemo);
   return (
