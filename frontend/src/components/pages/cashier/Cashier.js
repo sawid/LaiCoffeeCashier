@@ -29,7 +29,7 @@ const Cashier = () => {
   // Modal
   const [show, setShow] = useState(false);
   const [showModalDelete, setShowModalDelete] = useState(false);
-  const [dataModal, setDataModal] = useState({ menuName: "", menuId: "", menuOption:[] });
+  const [dataModal, setDataModal] = useState({ menuName: "", menuId: "", menuOption: [] });
   const [dataModalDelete, setDataModalDelete] = useState({
     menuName: "",
     menuId: "",
@@ -47,16 +47,16 @@ const Cashier = () => {
     setDataModal({ menuName: menuName, menuId: menuId, menuOption: menuOption });
     setDataSelectedMenuOption(menuOption.map(item => {
       const queryMenuType = dataListMenuOption.filter((element) => {
-        if(element._id === item) {
+        if (element._id === item) {
           return element.menuType
         }
       })
-      if(queryMenuType[0].menuType === 1) {
-        return {checkedId: item, checkedStatus: false, checkedText:""}
+      if (queryMenuType[0].menuType === 1) {
+        return { checkedId: item, checkedStatus: false, checkedText: "" }
       }
       else {
-      return {checkedId: item, checkedStatus: false, checkedText:[]}
-    }
+        return { checkedId: item, checkedStatus: false, checkedText: [] }
+      }
     }))
     setShow(true);
     // console.log(dataModal);
@@ -84,7 +84,7 @@ const Cashier = () => {
 
   // Fetch Data
   const loadDataMenuSection = () => {
-      listMenuSection()
+    listMenuSection()
       .then((res) => {
         setDataListMenuSection(res.data);
       })
@@ -94,7 +94,7 @@ const Cashier = () => {
   };
 
   const loadDataMenuOption = () => {
-      listMenuOption()
+    listMenuOption()
       .then((res) => {
         setDataListMenuOption(res.data);
       })
@@ -104,7 +104,7 @@ const Cashier = () => {
   };
 
   const loadDataMenu = () => {
-      listMenu()
+    listMenu()
       .then((res) => {
         setDataListMenu(res.data);
         setDataListMenuShow(res.data);
@@ -175,31 +175,33 @@ const Cashier = () => {
   const handleChangeUpdateSelectedOption = (menuOptionId, menuOptionType, menuOptionName) => {
     // console.log(menuOptionId, menuOptionType, menuOptionName);
     const setNewStateData = dataSelectedMenuOption.map(item => {
-      
       if (item.checkedId === menuOptionId) {
-        // console.log(item)
         if (menuOptionType === 1) {
           if (menuOptionName === item.checkedText) {
-            // setDataSelectedMenuOption({ ...item, checkedText: ""})
-            // console.log(item ,menfuOptionName)ff
             return { ...item, checkedText: "" }
           }
           else if (item.checkedText === "") {
             return { ...item, checkedText: menuOptionName }
-            // setQuerySearchUpdateSelectedOption({ checkedId: item.checkedId, menuOptionName: menuOptionName})
-            // setDataSelectedMenuOption(currentItem => {
-              // currentItem.map(itemOption => {
-                // if (itemOption.checkedId === item.checkedId) {
-                  // return { ...itemOption, checkedText: menuOptionName }
-                // }
-                // return itemOption;
-              // })
-            // })
-            // setDataSelectedMenuOption(newStateSet)
-            
           }
           else if (menuOptionName !== item.checkedText) {
             return { ...item, checkedText: menuOptionName }
+          }
+        }
+        else if (menuOptionType === 2) {
+          var tempArray = item.checkedText
+          if (tempArray.length === 0) {
+            var newTempArray = [...tempArray, menuOptionName]
+            return { ...item, checkedText: newTempArray }
+          }
+          else if (tempArray.includes(menuOptionName)) {
+            var newTempArray = tempArray.filter(item => 
+              item !== menuOptionName
+            )
+            return { ...item, checkedText: newTempArray }
+          }
+          else {
+            var newTempArray = [...tempArray, menuOptionName]
+            return { ...item, checkedText: newTempArray }
           }
         }
       }
@@ -207,12 +209,12 @@ const Cashier = () => {
     })
     setDataSelectedMenuOption(setNewStateData)
     // setDataSelectedMenuOption(currentItem => {
-      // currentItem.map(itemOption => {
-        // if (itemOption.checkedId === querySearchUpdateSelectedOption.checkedId) {
-          // return { ...itemOption, checkedId: menuOptionName }
-        // }
-        // return itemOption
-      // })
+    // currentItem.map(itemOption => {
+    // if (itemOption.checkedId === querySearchUpdateSelectedOption.checkedId) {
+    // return { ...itemOption, checkedId: menuOptionName }
+    // }
+    // return itemOption
+    // })
     // })
   }
 
@@ -231,7 +233,22 @@ const Cashier = () => {
     return datalog
   }
 
-  console.log(dataSelectedMenuOption[0])
+  const handleCheckedCheckBox = (checkedId, menuOptionName) => {
+    var datalog = false
+    dataSelectedMenuOption.map(item => {
+      if (item.checkedId === checkedId) {
+        if (item.checkedText.includes(menuOptionName)) {
+          datalog = true
+        }
+        else {
+          datalog = false
+        }
+      }
+    })
+    return datalog
+  }
+
+  console.log(dataSelectedMenuOption)
 
   // console.log(dataMenuMemo);
   return (
@@ -350,33 +367,33 @@ const Cashier = () => {
           {
             dataSelectedMenuOption.map(item => {
               const querydata = dataListMenuOption.find(element => {
-                if(item.checkedId === element._id) {
+                if (item.checkedId === element._id) {
                   return element
                 }
               })
               return <Form className="mt-2">
-              <Form.Group>
-                <Form.Label>เลือก {querydata.menuOptionName}</Form.Label>
-                {
-                  querydata.menuOptionChoice.map((element, index) => (
-                    <Form.Check
-                    type={ querydata.menuType === 2 ? "checkbox" : "radio" }
-                    id={element._id}
-                    name={querydata._id}
-                    label={element.menuOptionChoiceName}
-                    checked={ querydata.menuType === 1 ? handleUncheckedRadioButton(querydata._id, element.menuOptionChoiceName) : ""}
-                    onClick={() => handleChangeUpdateSelectedOption(querydata._id, querydata.menuType, element.menuOptionChoiceName)}
-                  />
-                  ))
-                }
-               
-                
-              </Form.Group>
-            </Form>
+                <Form.Group>
+                  <Form.Label>เลือก {querydata.menuOptionName}</Form.Label>
+                  {
+                    querydata.menuOptionChoice.map((element, index) => (
+                      <Form.Check
+                        type={querydata.menuType === 2 ? "checkbox" : "radio"}
+                        id={element._id}
+                        name={querydata._id}
+                        label={element.menuOptionChoiceName}
+                        checked={querydata.menuType === 1 ? handleUncheckedRadioButton(querydata._id, element.menuOptionChoiceName) : handleCheckedCheckBox(querydata._id, element.menuOptionChoiceName) }
+                        onClick={() => handleChangeUpdateSelectedOption(querydata._id, querydata.menuType, element.menuOptionChoiceName)}
+                      />
+                    ))
+                  }
+
+
+                </Form.Group>
+              </Form>
             })
           }
-          
-          
+
+
           <Form className="mt-2">
             <Form.Group>
               <Form.Label>หมายเหตุ</Form.Label>
