@@ -140,12 +140,12 @@ const Cashier = () => {
       });
       setDataSelectedMenu(newState);
     } else {
-      
+
       var dataSelected = []
       dataSelectedMenuOption.map(item => {
         menuOption.map(itemOption => {
           if (item.checkedId === itemOption) {
-            dataSelected = [ ...dataSelected, item.checkedText]
+            dataSelected = [...dataSelected, item.checkedText]
           }
         })
       })
@@ -163,7 +163,7 @@ const Cashier = () => {
     setShow(false);
     setNumberMenu(1);
     setDataMenuMemo({ menuMemo: "" });
-    
+
     setDataSelectedMenuOption(menuOption.map(item => {
       const queryMenuTypeAddSelect = dataListMenuOption.filter((element) => {
         if (element._id === item) {
@@ -221,7 +221,7 @@ const Cashier = () => {
             return { ...item, checkedText: newTempArray }
           }
           else if (tempArray.includes(menuOptionName)) {
-            var newTempArray = tempArray.filter(item => 
+            var newTempArray = tempArray.filter(item =>
               item !== menuOptionName
             )
             return { ...item, checkedText: newTempArray }
@@ -341,11 +341,20 @@ const Cashier = () => {
                     <Row>
                       <Col md={4}>
                         <Col>{item.menuName}</Col>
+                        {item.menuOption.map((itemOption, index) => (<>{
+                          Array.isArray(itemOption) ? <>{
+                            itemOption.map(itemOptionChoice => {
+                              return (<Col className="text-secondary">- {itemOptionChoice} </Col>)
+                            })
+                          }</>
+                          : <Col className="text-secondary">- { itemOption }</Col>
+                        }</>))}
                         {item.menuMemo.length === 0 ? (
                           <React.Fragment></React.Fragment>
                         ) : (
                           <Col className="text-warning"> * {item.menuMemo}</Col>
                         )}
+
                       </Col>
                       <Col className="align-items-end">
                         {" "}
@@ -408,7 +417,7 @@ const Cashier = () => {
                         id={element._id}
                         name={querydata._id}
                         label={element.menuOptionChoiceName}
-                        checked={querydata.menuType === 1 ? handleUncheckedRadioButton(querydata._id, element.menuOptionChoiceName) : handleCheckedCheckBox(querydata._id, element.menuOptionChoiceName) }
+                        checked={querydata.menuType === 1 ? handleUncheckedRadioButton(querydata._id, element.menuOptionChoiceName) : handleCheckedCheckBox(querydata._id, element.menuOptionChoiceName)}
                         onClick={() => handleChangeUpdateSelectedOption(querydata._id, querydata.menuType, element.menuOptionChoiceName)}
                       />
                     ))
