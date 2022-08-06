@@ -125,7 +125,7 @@ const Cashier = () => {
     );
   };
 
-  const handleClickMenuAddSelect = (menuName, menuId, numberMenu, menuMemo) => {
+  const handleClickMenuAddSelect = (menuName, menuId, numberMenu, menuMemo, menuOption) => {
     if (
       dataSelectedMenu.find((element) => {
         return element.menuId === menuId;
@@ -140,6 +140,15 @@ const Cashier = () => {
       });
       setDataSelectedMenu(newState);
     } else {
+      
+      var dataSelected = []
+      dataSelectedMenuOption.map(item => {
+        menuOption.map(itemOption => {
+          if (item.checkedId === itemOption) {
+            dataSelected = [ ...dataSelected, item.checkedText]
+          }
+        })
+      })
       setDataSelectedMenu((prev) => [
         ...prev,
         {
@@ -147,13 +156,31 @@ const Cashier = () => {
           menuId: menuId,
           menuAmount: numberMenu,
           menuMemo: menuMemo,
+          menuOption: dataSelected,
         },
       ]);
     }
     setShow(false);
     setNumberMenu(1);
     setDataMenuMemo({ menuMemo: "" });
+    
+    setDataSelectedMenuOption(menuOption.map(item => {
+      const queryMenuTypeAddSelect = dataListMenuOption.filter((element) => {
+        if (element._id === item) {
+          return element.menuType
+        }
+      })
+      if (queryMenuTypeAddSelect[0].menuType === 1) {
+        return { checkedId: item, checkedStatus: false, checkedText: "" }
+      }
+      else {
+        return { checkedId: item, checkedStatus: false, checkedText: [] }
+      }
+    }))
   };
+
+  // console.log(dataSelectedMenu)
+  console.log("meuo Option", dataSelectedMenuOption)
 
   const handleClickShowList = () => {
     setDataListMenuShow(dataListMenu);
@@ -248,7 +275,7 @@ const Cashier = () => {
     return datalog
   }
 
-  console.log(dataSelectedMenuOption)
+  // console.log(dataSelectedMenuOption)
 
   // console.log(dataMenuMemo);
   return (
@@ -387,7 +414,6 @@ const Cashier = () => {
                     ))
                   }
 
-
                 </Form.Group>
               </Form>
             })
@@ -418,7 +444,8 @@ const Cashier = () => {
                 dataModal.menuName,
                 dataModal.menuId,
                 numberMenu,
-                dataMenuMemo.menuMemo
+                dataMenuMemo.menuMemo,
+                dataModal.menuOption
               )
             }
           >
