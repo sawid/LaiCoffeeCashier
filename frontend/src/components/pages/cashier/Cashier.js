@@ -25,6 +25,8 @@ const Cashier = () => {
   // Data On Page
   const [dataSelectedMenu, setDataSelectedMenu] = useState([]);
   const [dataSelectedMenuOption, setDataSelectedMenuOption] = useState([]);
+  const [dataTotalPrice, setDataTotalPrice] = useState([]);
+  const [dataListMenuOptionPrice, setDataListMenuOptionPrice] = useState([]);
 
   // Modal
   const [show, setShow] = useState(false);
@@ -38,49 +40,6 @@ const Cashier = () => {
 
   // Temporary Data
   const [dataMenuMemo, setDataMenuMemo] = useState({ menuMemo: "" });
-
-  const handleClose = () => {
-    setShow(false);
-  };
-
-  const handleShow = (menuName, menuId, menuOption) => {
-    setDataModal({ menuName: menuName, menuId: menuId, menuOption: menuOption });
-    setDataSelectedMenuOption(menuOption.map(item => {
-      const queryMenuType = dataListMenuOption.filter((element) => {
-        if (element._id === item) {
-          return element.menuType
-        }
-      })
-      if (queryMenuType[0].menuType === 1) {
-        return { checkedId: item, checkedStatus: false, checkedText: "" }
-      }
-      else {
-        return { checkedId: item, checkedStatus: false, checkedText: [] }
-      }
-    }))
-    setShow(true);
-    // console.log(dataModal);
-  };
-  // console.log(dataListMenuOption)
-  // console.log(dataSelectedMenuOption)
-
-  const handleCloseModalDelete = () => {
-    setShowModalDelete(false);
-  };
-
-  const handleShowModalDelete = (menuName, menuId) => {
-    setDataModalDelete({ menuName: menuName, menuId: menuId });
-    setShowModalDelete(true);
-  };
-
-  // console.log(dataListMenuSection);
-
-  // useEffect Action
-  useEffect(() => {
-    loadDataMenuSection();
-    loadDataMenuOption();
-    loadDataMenu();
-  }, []);
 
   // Fetch Data
   const loadDataMenuSection = () => {
@@ -113,6 +72,60 @@ const Cashier = () => {
         console.log(error.response.data);
       });
   };
+
+  // useEffect Action
+  useEffect(() => {
+    loadDataMenuSection();
+    loadDataMenuOption();
+    loadDataMenu();
+  }, []);
+
+  const handleClose = () => {
+    setShow(false);
+  };
+
+  const handleShow = (menuName, menuId, menuOption) => {
+    setDataModal({ menuName: menuName, menuId: menuId, menuOption: menuOption });
+    setDataSelectedMenuOption(menuOption.map(item => {
+      const queryMenuType = dataListMenuOption.filter((element) => {
+        if (element._id === item) {
+          return element.menuType
+        }
+      })
+      const tempListMenuPrice = dataListMenu.filter((element) => {
+        if (element._id === menuId) {
+          return element.menuPrice
+        }
+      })
+      var tempData = dataListMenuOption.forEach((itemOption) => {
+        tempData = [...itemOption.menuOptionChoice, itemOption.menuOptionChoice]
+      })
+      setDataListMenuOptionPrice(tempData)
+      console.log(dataListMenuOptionPrice)
+      if (queryMenuType[0].menuType === 1) {
+        return { checkedId: item, checkedStatus: false, checkedText: "" }
+      }
+      else {
+        return { checkedId: item, checkedStatus: false, checkedText: [] }
+      }
+    }))
+    setShow(true);
+
+    // console.log(dataModal);
+  };
+
+  // console.log(dataSelectedMenuOption)
+
+  const handleCloseModalDelete = () => {
+    setShowModalDelete(false);
+  };
+
+  const handleShowModalDelete = (menuName, menuId) => {
+    setDataModalDelete({ menuName: menuName, menuId: menuId });
+    setShowModalDelete(true);
+  };
+
+  // console.log(dataListMenuSection);
 
   //Handling Event
   //OnClick Event
@@ -157,6 +170,7 @@ const Cashier = () => {
           menuAmount: numberMenu,
           menuMemo: menuMemo,
           menuOption: dataSelected,
+          menuTotalPrice: 0,
         },
       ]);
     }
@@ -180,7 +194,7 @@ const Cashier = () => {
   };
 
   // console.log(dataSelectedMenu)
-  console.log("meuo Option", dataSelectedMenuOption)
+  // console.log("meuo Option", dataSelectedMenuOption)
 
   const handleClickShowList = () => {
     setDataListMenuShow(dataListMenu);
@@ -276,7 +290,7 @@ const Cashier = () => {
   }
 
   // console.log(dataSelectedMenuOption)
-
+  // console.log(dataSelectedMenu)
   // console.log(dataMenuMemo);
   return (
     <div>
@@ -344,10 +358,10 @@ const Cashier = () => {
                         {item.menuOption.map((itemOption, index) => (<>{
                           Array.isArray(itemOption) ? <>{
                             itemOption.map(itemOptionChoice => {
-                              return (<Col className="text-secondary">- {itemOptionChoice} </Col>)
+                              return (<Col className="text-secondary">+ {itemOptionChoice} </Col>)
                             })
                           }</>
-                          : <Col className="text-secondary">- { itemOption }</Col>
+                            : <Col className="text-secondary">+ {itemOption}</Col>
                         }</>))}
                         {item.menuMemo.length === 0 ? (
                           <React.Fragment></React.Fragment>
