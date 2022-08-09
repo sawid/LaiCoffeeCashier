@@ -26,10 +26,32 @@ exports.listMenuOption = async (req, res) => {
         try {
                 var menuoption = await MenuOption.find()
                 if (!menuoption) {
-                        res.status(400).send('Menu List Not Exists');    
+                        res.status(400).send('Menu List Option Not Exists');    
                 }
                 else {
                         res.send(menuoption);
+                }
+        } catch (error) {
+                console.log(error)
+                res.status(500).send('Server Error')
+        }
+}
+
+exports.listMenuOptionPrice = async (req, res) => {
+        try {
+                var menuoption = await MenuOption.find({}, {_id: 0, menuOptionChoice: 1})
+                var menuOptionPrice = []
+                if (!menuoption) {
+                        res.status(400).send('Menu List Option Price Not Exists');    
+                }
+                else {
+                        menuoption.forEach(item => {
+                                item.menuOptionChoice.forEach(itemChoice => {
+                                        console.log(itemChoice.menuOptionChoiceName)
+                                        menuOptionPrice.push({ menuOptionChoiceName: itemChoice.menuOptionChoiceName, menuOptionChoicePrice: itemChoice.menuOptionChoicePrice})
+                                })
+                        })
+                        res.send(menuOptionPrice);
                 }
         } catch (error) {
                 console.log(error)

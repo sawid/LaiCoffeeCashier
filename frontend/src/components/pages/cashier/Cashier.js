@@ -80,6 +80,7 @@ const Cashier = () => {
     loadDataMenu();
   }, []);
 
+  // Modal Action
   const handleClose = () => {
     setShow(false);
   };
@@ -97,7 +98,8 @@ const Cashier = () => {
           return element.menuPrice
         }
       })
-      var tempData = dataListMenuOption.forEach((itemOption) => {
+      var tempData = []
+      dataListMenuOption.forEach((itemOption) => {
         tempData = [...itemOption.menuOptionChoice, itemOption.menuOptionChoice]
       })
       setDataListMenuOptionPrice(tempData)
