@@ -13,7 +13,7 @@ import InputSpinner from "react-bootstrap-input-spinner";
 import { listMenu } from "../../functions/menu";
 
 import { listMenuSection } from "../../functions/menusection";
-import { listMenuOption } from "../../functions/menuoption";
+import { listMenuOption, listMenuOptionChoice } from "../../functions/menuoption";
 
 const Cashier = () => {
   // Initial Variable
@@ -22,6 +22,7 @@ const Cashier = () => {
   const [dataListMenuOption, setDataListMenuOption] = useState([]);
   const [dataListMenuShow, setDataListMenuShow] = useState([]);
   const [dataListMenu, setDataListMenu] = useState([]);
+  const [dataListMenuOptionChoice, setDataListMenuOptionChoice] = useState([]);
   // Data On Page
   const [dataSelectedMenu, setDataSelectedMenu] = useState([]);
   const [dataSelectedMenuOption, setDataSelectedMenuOption] = useState([]);
@@ -73,11 +74,22 @@ const Cashier = () => {
       });
   };
 
+  const loadDataMenuOptionChoice = () => {
+    listMenuOptionChoice()
+      .then((res) => {
+        setDataListMenuOptionChoice(res.data);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
+  };
+
   // useEffect Action
   useEffect(() => {
     loadDataMenuSection();
     loadDataMenuOption();
     loadDataMenu();
+    loadDataMenuOptionChoice();
   }, []);
 
   // Modal Action
@@ -98,12 +110,7 @@ const Cashier = () => {
           return element.menuPrice
         }
       })
-      var tempData = []
-      dataListMenuOption.forEach((itemOption) => {
-        tempData = [...itemOption.menuOptionChoice, itemOption.menuOptionChoice]
-      })
-      setDataListMenuOptionPrice(tempData)
-      console.log(dataListMenuOptionPrice)
+      console.log(dataListMenuOptionChoice)
       if (queryMenuType[0].menuType === 1) {
         return { checkedId: item, checkedStatus: false, checkedText: "" }
       }
@@ -432,7 +439,11 @@ const Cashier = () => {
                         type={querydata.menuType === 2 ? "checkbox" : "radio"}
                         id={element._id}
                         name={querydata._id}
-                        label={element.menuOptionChoiceName}
+                        label={ 
+                          dataListMenuOptionChoice.map(item => (<>
+                            { item.menuOptionChoiceName === element.menuOptionChoiceName ? <>{item.menuOptionChoiceName} ราคา {item.menuOptionChoicePrice}</> : "" }
+                            </>))
+                        }
                         checked={querydata.menuType === 1 ? handleUncheckedRadioButton(querydata._id, element.menuOptionChoiceName) : handleCheckedCheckBox(querydata._id, element.menuOptionChoiceName)}
                         onClick={() => handleChangeUpdateSelectedOption(querydata._id, querydata.menuType, element.menuOptionChoiceName)}
                       />
