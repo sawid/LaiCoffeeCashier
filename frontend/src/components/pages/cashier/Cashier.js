@@ -367,10 +367,14 @@ const Cashier = () => {
                         {item.menuOption.map((itemOption, index) => (<>{
                           Array.isArray(itemOption) ? <>{
                             itemOption.map(itemOptionChoice => {
-                              return (<Col className="text-secondary">+ {itemOptionChoice} </Col>)
+                              return (<Col className="text-secondary">+ {itemOptionChoice} {
+                                dataListMenuOptionChoice.map(item => (<>{item.menuOptionChoiceName === itemOptionChoice ? <>{item.menuOptionChoicePrice} บาท</> : ""}</>))
+                              } </Col>)
                             })
                           }</>
-                            : <Col className="text-secondary">+ {itemOption}</Col>
+                            : <Col className="text-secondary">+ {itemOption} {
+                              dataListMenuOptionChoice.map(item => (<>{item.menuOptionChoiceName === itemOption ? <>{item.menuOptionChoicePrice} บาท</> : ""}</>))
+                            }</Col>
                         }</>))}
                         {item.menuMemo.length === 0 ? (
                           <React.Fragment></React.Fragment>
@@ -439,10 +443,10 @@ const Cashier = () => {
                         type={querydata.menuType === 2 ? "checkbox" : "radio"}
                         id={element._id}
                         name={querydata._id}
-                        label={ 
+                        label={
                           dataListMenuOptionChoice.map(item => (<>
-                            { item.menuOptionChoiceName === element.menuOptionChoiceName ? <>{item.menuOptionChoiceName} ราคา {item.menuOptionChoicePrice}</> : "" }
-                            </>))
+                            {item.menuOptionChoiceName === element.menuOptionChoiceName ? <>{item.menuOptionChoiceName} ราคา {item.menuOptionChoicePrice} บาท</> : ""}
+                          </>))
                         }
                         checked={querydata.menuType === 1 ? handleUncheckedRadioButton(querydata._id, element.menuOptionChoiceName) : handleCheckedCheckBox(querydata._id, element.menuOptionChoiceName)}
                         onClick={() => handleChangeUpdateSelectedOption(querydata._id, querydata.menuType, element.menuOptionChoiceName)}
