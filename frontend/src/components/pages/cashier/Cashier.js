@@ -105,11 +105,7 @@ const Cashier = () => {
           return element.menuType
         }
       })
-      const tempListMenuPrice = dataListMenu.filter((element) => {
-        if (element._id === menuId) {
-          return element.menuPrice
-        }
-      })
+      
       console.log(dataListMenuOptionChoice)
       if (queryMenuType[0].menuType === 1) {
         return { checkedId: item, checkedStatus: false, checkedText: "" }
@@ -162,7 +158,11 @@ const Cashier = () => {
       });
       setDataSelectedMenu(newState);
     } else {
-
+      const tempListMenuPrice = dataListMenu.filter((element) => {
+        if (element._id === menuId) {
+          return element.menuPrice
+        }
+      })
       var dataSelected = []
       dataSelectedMenuOption.map(item => {
         menuOption.map(itemOption => {
@@ -171,6 +171,7 @@ const Cashier = () => {
           }
         })
       })
+      console.log(tempListMenuPrice[0].menuPrice)
       setDataSelectedMenu((prev) => [
         ...prev,
         {
@@ -179,6 +180,7 @@ const Cashier = () => {
           menuAmount: numberMenu,
           menuMemo: menuMemo,
           menuOption: dataSelected,
+          menuPrice: tempListMenuPrice[0].menuPrice,
           menuTotalPrice: 0,
         },
       ]);
@@ -363,7 +365,7 @@ const Cashier = () => {
                   <Card.Text>
                     <Row>
                       <Col md={4}>
-                        <Col>{item.menuName}</Col>
+                        <Col>{item.menuName} {item.menuPrice} บาท</Col>
                         {item.menuOption.map((itemOption, index) => (<>{
                           Array.isArray(itemOption) ? <>{
                             itemOption.map(itemOptionChoice => {
