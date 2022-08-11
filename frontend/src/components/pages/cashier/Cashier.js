@@ -93,7 +93,20 @@ const Cashier = () => {
   }, []);
 
   // Modal Action
-  const handleClose = () => {
+  const handleClose = (menuOption) => {
+    setDataSelectedMenuOption(menuOption.map(item => {
+      const queryMenuTypeAddSelect = dataListMenuOption.filter((element) => {
+        if (element._id === item) {
+          return element.menuType
+        }
+      })
+      if (queryMenuTypeAddSelect[0].menuType === 1) {
+        return { checkedId: item, checkedStatus: false, checkedText: "" }
+      }
+      else {
+        return { checkedId: item, checkedStatus: false, checkedText: [] }
+      }
+    }))
     setShow(false);
   };
 
@@ -412,7 +425,7 @@ const Cashier = () => {
       </Container>
       {/* Modal */}
 
-      <Modal className="font-sarabun" show={show} onHide={handleClose}>
+      <Modal className="font-sarabun" show={show} onHide={() => handleClose(dataModal.menuOption)}>
         <Modal.Header>
           <Modal.Title>เพิ่มรายการ {dataModal.menuName}</Modal.Title>
         </Modal.Header>
@@ -476,7 +489,7 @@ const Cashier = () => {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="secondary" onClick={() => handleClose(dataModal.menuOption)}>
             ปิด
           </Button>
           <Button
