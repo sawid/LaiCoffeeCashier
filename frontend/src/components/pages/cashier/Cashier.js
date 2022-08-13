@@ -489,7 +489,7 @@ const Cashier = () => {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => handleClose(dataModal.menuOption)}>
+          <Button variant="secondary" onClick={handleClose}>
             ปิด
           </Button>
           <Button
@@ -511,7 +511,6 @@ const Cashier = () => {
       <Modal
         className="font-sarabun"
         show={showModalDelete}
-        onHide={handleClose}
       >
         <Modal.Header>
           <Modal.Title>ลบรายการ {dataModalDelete.menuName}</Modal.Title>
