@@ -387,7 +387,7 @@ const Cashier = () => {
                               } </Col>)
                             })
                           }</>
-                            : <Col className="text-secondary">+ {itemOption} {
+                            : <Col className="text-secondary">{itemOption !== "" ? <React.Fragment>+ {itemOption}</React.Fragment> : <React.Fragment></React.Fragment>} {
                               dataListMenuOptionChoice.map(item => (<>{item.menuOptionChoiceName === itemOption ? <>{item.menuOptionChoicePrice} บาท</> : ""}</>))
                             }</Col>
                         }</>))}
