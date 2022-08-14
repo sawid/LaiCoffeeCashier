@@ -489,7 +489,7 @@ const Cashier = () => {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="secondary" onClick={() => handleClose(dataModal.menuOption)}>
             ปิด
           </Button>
           <Button
