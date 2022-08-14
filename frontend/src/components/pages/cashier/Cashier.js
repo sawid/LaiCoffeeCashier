@@ -7,6 +7,7 @@ import {
   Card,
   Modal,
   Form,
+  Badge,
 } from "react-bootstrap";
 import { BsFillTrashFill } from "react-icons/bs";
 import InputSpinner from "react-bootstrap-input-spinner";
@@ -28,7 +29,8 @@ const Cashier = () => {
   const [dataSelectedMenuOption, setDataSelectedMenuOption] = useState([]);
   const [dataTotalPrice, setDataTotalPrice] = useState([]);
   const [dataListMenuOptionPrice, setDataListMenuOptionPrice] = useState([]);
-
+  // Gobal Variable
+  var totalBillPrice = 0
   // Modal
   const [show, setShow] = useState(false);
   const [showModalDelete, setShowModalDelete] = useState(false);
@@ -395,7 +397,7 @@ const Cashier = () => {
                   <Card.Text>
                     <Row>
                       <Col md={4}>
-                        <Col>{item.menuName} - {item.menuPrice}</Col>
+                        <Col><Badge bg="info">{item.menuAmount}x</Badge> {item.menuName} - {item.menuPrice}</Col>
                         {item.menuOption.map((itemOption, index) => (<>{
                           Array.isArray(itemOption) ? <>{
                             itemOption.map(itemOptionChoice => {
@@ -417,7 +419,7 @@ const Cashier = () => {
                       </Col>
                       <Col className="align-items-end">
                         {" "}
-                        จำนวน {item.menuAmount}{" * "} { item.menuTotalPrice } รวม 
+                        ราคา {item.menuAmount}{" x "} { item.menuTotalPrice } รวม <Badge bg="primary"> { item.menuAmount * item.menuTotalPrice } </Badge> บาท
                       </Col>
                       <Col md={3} className="text-right">
                         <Button
@@ -435,6 +437,7 @@ const Cashier = () => {
                 ))}
 
                 <Card.Title> สรุปรายการ </Card.Title>
+                <Card.Text> ราคาสุทธิ <Badge bg="success">{totalBillPrice}</Badge> บาท</Card.Text>
               </Card.Body>
             </Card>
           </Col>
