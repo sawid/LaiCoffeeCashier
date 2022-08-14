@@ -184,6 +184,23 @@ const Cashier = () => {
           }
         })
       })
+      var tempDataPrice = []
+      dataSelected.forEach((tempDataSelected) => {
+        if (Array.isArray(tempDataSelected)) {
+          tempDataSelected.map((tempOfTempDataSelected) => {
+            tempDataPrice.push(tempOfTempDataSelected)
+          })
+        }
+        else {
+          tempDataPrice.push(tempDataSelected)
+        }
+        
+      })
+      let tempPrice = 0
+      tempDataPrice.map((tempData) => {
+        tempPrice += (dataListMenuOptionChoice.find(temp => temp.menuOptionChoiceName === tempData)).menuOptionChoicePrice
+      })
+      console.log(tempPrice)
       console.log(tempListMenuPrice[0].menuPrice)
       setDataSelectedMenu((prev) => [
         ...prev,
@@ -194,7 +211,7 @@ const Cashier = () => {
           menuMemo: menuMemo,
           menuOption: dataSelected,
           menuPrice: tempListMenuPrice[0].menuPrice,
-          menuTotalPrice: 0,
+          menuTotalPrice: tempListMenuPrice[0].menuPrice + tempPrice,
         },
       ]);
     }
@@ -378,17 +395,17 @@ const Cashier = () => {
                   <Card.Text>
                     <Row>
                       <Col md={4}>
-                        <Col>{item.menuName} {item.menuPrice} บาท</Col>
+                        <Col>{item.menuName} - {item.menuPrice}</Col>
                         {item.menuOption.map((itemOption, index) => (<>{
                           Array.isArray(itemOption) ? <>{
                             itemOption.map(itemOptionChoice => {
                               return (<Col className="text-secondary">+ {itemOptionChoice} {
-                                dataListMenuOptionChoice.map(item => (<>{item.menuOptionChoiceName === itemOptionChoice ? <>{item.menuOptionChoicePrice} บาท</> : ""}</>))
+                                dataListMenuOptionChoice.map(item => (<>{item.menuOptionChoiceName === itemOptionChoice ? <> - {item.menuOptionChoicePrice}</> : ""}</>))
                               } </Col>)
                             })
                           }</>
                             : <Col className="text-secondary">{itemOption !== "" ? <React.Fragment>+ {itemOption}</React.Fragment> : <React.Fragment></React.Fragment>} {
-                              dataListMenuOptionChoice.map(item => (<>{item.menuOptionChoiceName === itemOption ? <>{item.menuOptionChoicePrice} บาท</> : ""}</>))
+                              dataListMenuOptionChoice.map(item => (<>{item.menuOptionChoiceName === itemOption ? <> - {item.menuOptionChoicePrice}</> : ""}</>))
                             }</Col>
                         }</>))}
                         {item.menuMemo.length === 0 ? (
@@ -400,7 +417,7 @@ const Cashier = () => {
                       </Col>
                       <Col className="align-items-end">
                         {" "}
-                        จำนวน {item.menuAmount}{" "}
+                        จำนวน {item.menuAmount}{" * "} { item.menuTotalPrice } รวม 
                       </Col>
                       <Col md={3} className="text-right">
                         <Button
