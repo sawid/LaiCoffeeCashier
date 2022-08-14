@@ -254,6 +254,10 @@ const Cashier = () => {
     const newStateRemove = dataSelectedMenu.filter(
       (item) => item.menuId !== menuId
     );
+    let tempMenuPrice = dataSelectedMenu.find(item => item.menuId === menuId)
+    setTotalBillPrice(temp => {
+      return temp -= (tempMenuPrice.menuTotalPrice) * tempMenuPrice.menuAmount
+    })
     setDataSelectedMenu(newStateRemove);
     setShowModalDelete(false);
   };
