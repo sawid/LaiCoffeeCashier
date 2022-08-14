@@ -30,7 +30,7 @@ const Cashier = () => {
   const [dataTotalPrice, setDataTotalPrice] = useState([]);
   const [dataListMenuOptionPrice, setDataListMenuOptionPrice] = useState([]);
   // Gobal Variable
-  var totalBillPrice = 0
+  const [totalBillPrice,setTotalBillPrice] = useState(0);
   // Modal
   const [show, setShow] = useState(false);
   const [showModalDelete, setShowModalDelete] = useState(false);
@@ -121,7 +121,7 @@ const Cashier = () => {
         }
       })
       
-      console.log(dataListMenuOptionChoice)
+      // console.log(dataListMenuOptionChoice)
       if (queryMenuType[0].menuType === 1) {
         return { checkedId: item, checkedStatus: false, checkedText: "" }
       }
@@ -202,8 +202,8 @@ const Cashier = () => {
       tempDataPrice.map((tempData) => {
         tempPrice += (dataListMenuOptionChoice.find(temp => temp.menuOptionChoiceName === tempData)).menuOptionChoicePrice
       })
-      console.log(tempPrice)
-      console.log(tempListMenuPrice[0].menuPrice)
+      // console.log(tempPrice)
+      // console.log(tempListMenuPrice[0].menuPrice)
       setDataSelectedMenu((prev) => [
         ...prev,
         {
@@ -216,11 +216,15 @@ const Cashier = () => {
           menuTotalPrice: tempListMenuPrice[0].menuPrice + tempPrice,
         },
       ]);
+      setTotalBillPrice(item => {
+        return item += (tempListMenuPrice[0].menuPrice + tempPrice) * numberMenu
+      })
     }
+    
     setShow(false);
     setNumberMenu(1);
     setDataMenuMemo({ menuMemo: "" });
-
+    
     setDataSelectedMenuOption(menuOption.map(item => {
       const queryMenuTypeAddSelect = dataListMenuOption.filter((element) => {
         if (element._id === item) {
@@ -397,17 +401,17 @@ const Cashier = () => {
                   <Card.Text>
                     <Row>
                       <Col md={4}>
-                        <Col><Badge bg="info">{item.menuAmount}x</Badge> {item.menuName} - {item.menuPrice}</Col>
+                        <Col><Badge bg="info">{item.menuAmount}x</Badge> {item.menuName} {item.menuPrice} ฿</Col>
                         {item.menuOption.map((itemOption, index) => (<>{
                           Array.isArray(itemOption) ? <>{
                             itemOption.map(itemOptionChoice => {
                               return (<Col className="text-secondary">+ {itemOptionChoice} {
-                                dataListMenuOptionChoice.map(item => (<>{item.menuOptionChoiceName === itemOptionChoice ? <> - {item.menuOptionChoicePrice}</> : ""}</>))
+                                dataListMenuOptionChoice.map(item => (<>{item.menuOptionChoiceName === itemOptionChoice ? <>{item.menuOptionChoicePrice} ฿</> : ""}</>))
                               } </Col>)
                             })
                           }</>
                             : <Col className="text-secondary">{itemOption !== "" ? <React.Fragment>+ {itemOption}</React.Fragment> : <React.Fragment></React.Fragment>} {
-                              dataListMenuOptionChoice.map(item => (<>{item.menuOptionChoiceName === itemOption ? <> - {item.menuOptionChoicePrice}</> : ""}</>))
+                              dataListMenuOptionChoice.map(item => (<>{item.menuOptionChoiceName === itemOption ? <>{item.menuOptionChoicePrice} ฿</> : ""}</>))
                             }</Col>
                         }</>))}
                         {item.menuMemo.length === 0 ? (
