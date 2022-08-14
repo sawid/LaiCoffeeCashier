@@ -167,6 +167,9 @@ const Cashier = () => {
       const newState = dataSelectedMenu.map((item) => {
         if (item.menuId === menuId) {
           var totalNumberMenu = item.menuAmount + numberMenu;
+          setTotalBillPrice(temp => {
+            return temp += (item.menuTotalPrice) * numberMenu
+          })
           return { ...item, menuAmount: totalNumberMenu };
         }
         return item;
