@@ -189,19 +189,21 @@ const Cashier = () => {
           }
         })
       })
-      var tempDataPrice = []
+      let tempDataPrice = []
       dataSelected.forEach((tempDataSelected) => {
         if (Array.isArray(tempDataSelected)) {
           tempDataSelected.map((tempOfTempDataSelected) => {
             tempDataPrice.push(tempOfTempDataSelected)
           })
         }
-        else {
+        else if (tempDataSelected !== "") {
           tempDataPrice.push(tempDataSelected)
         }
         
       })
       let tempPrice = 0
+      console.log(dataListMenuOptionChoice)
+      console.log(tempDataPrice)
       tempDataPrice.map((tempData) => {
         tempPrice += (dataListMenuOptionChoice.find(temp => temp.menuOptionChoiceName === tempData)).menuOptionChoicePrice
       })
