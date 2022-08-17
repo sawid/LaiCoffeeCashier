@@ -28,7 +28,7 @@ const Cashier = () => {
   const [dataSelectedMenu, setDataSelectedMenu] = useState([]);
   const [dataSelectedMenuOption, setDataSelectedMenuOption] = useState([]);
   const [dataTotalPrice, setDataTotalPrice] = useState([]);
-  const [dataListMenuOptionPrice, setDataListMenuOptionPrice] = useState([]);
+  const [dataListMenuOnCondition, setDataListMenuOnCondition] = useState([]);
   // Gobal Variable
   const [totalBillPrice,setTotalBillPrice] = useState(0);
   // Modal
@@ -159,12 +159,6 @@ const Cashier = () => {
   };
 
   const handleClickMenuAddSelect = (menuName, menuId, numberMenu, menuMemo, menuOption) => {
-    console.log(menuOption)
-    let checkedConditionSelectedMenu = dataSelectedMenu.find((element) => {
-      return element.menuId === menuId;
-    })
-    console.log(dataSelectedMenuOption)
-    console.log(checkedConditionSelectedMenu)
     if (
       dataSelectedMenu.find((element) => {
         return element.menuId === menuId;
