@@ -43,6 +43,32 @@ const Cashier = () => {
 
   // Temporary Data
   const [dataMenuMemo, setDataMenuMemo] = useState({ menuMemo: "" });
+  
+  // Functional
+  const getNestedArrayToOneArray = (array1) => {
+    let tempArray = []
+    array1.forEach((tempDataSelected) => {
+        if (Array.isArray(tempDataSelected)) {
+          tempDataSelected.map((tempOfTempDataSelected) => {
+            tempArray.push(tempOfTempDataSelected)
+          })
+        }
+        else if (tempDataSelected !== "") {
+          tempArray.push(tempDataSelected)
+        }
+        
+      })
+      return tempArray
+  }
+
+  const checkArrayIsSame = (array1, array2) => {
+    let tempArray1 = getNestedArrayToOneArray(array1)
+    let tempArray2 = getNestedArrayToOneArray(array2)
+    let isSame = (tempArray1.length == tempArray2.length) && tempArray1.every(function(element, index) {
+      return element === tempArray2[index]; 
+    });
+    return isSame
+  }
 
   // Fetch Data
   const loadDataMenuSection = () => {
@@ -164,6 +190,17 @@ const Cashier = () => {
         return element.menuId === menuId;
       })
     ) {
+      let tempDataSelectedConditionCheck = dataSelectedMenu.find((element) => {
+        return element.menuId === menuId;
+      })
+      if (tempDataSelectedConditionCheck) {
+        console.log(getNestedArrayToOneArray(tempDataSelectedConditionCheck.menuOption).sort())
+        let tempDataSelectedMenuOption = dataSelectedMenuOption.map((element) => {
+          return element.checkedText
+        })
+        console.log(getNestedArrayToOneArray(tempDataSelectedMenuOption).sort())
+        console.log(checkArrayIsSame(tempDataSelectedConditionCheck.menuOption, tempDataSelectedMenuOption))
+      }
       const newState = dataSelectedMenu.map((item) => {
         if (item.menuId === menuId) {
           var totalNumberMenu = item.menuAmount + numberMenu;
