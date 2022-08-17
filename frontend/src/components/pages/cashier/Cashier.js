@@ -193,25 +193,71 @@ const Cashier = () => {
       let tempDataSelectedConditionCheck = dataSelectedMenu.find((element) => {
         return element.menuId === menuId;
       })
-      if (tempDataSelectedConditionCheck) {
-        console.log(getNestedArrayToOneArray(tempDataSelectedConditionCheck.menuOption).sort())
-        let tempDataSelectedMenuOption = dataSelectedMenuOption.map((element) => {
-          return element.checkedText
-        })
-        console.log(getNestedArrayToOneArray(tempDataSelectedMenuOption).sort())
-        console.log(checkArrayIsSame(tempDataSelectedConditionCheck.menuOption, tempDataSelectedMenuOption))
+      let tempDataSelectedMenuOption = dataSelectedMenuOption.map((element) => {
+        return element.checkedText
+      })
+      if (checkArrayIsSame(tempDataSelectedConditionCheck.menuOption, tempDataSelectedMenuOption)) {
+        const newState = dataSelectedMenu.map((item) => {
+          if (item.menuId === menuId && checkArrayIsSame(item.menuOption, tempDataSelectedMenuOption)) {
+            var totalNumberMenu = item.menuAmount + numberMenu;
+            setTotalBillPrice(temp => {
+              return temp += (item.menuTotalPrice) * numberMenu
+            })
+            return { ...item, menuAmount: totalNumberMenu };
+          }
+          return item;
+        });
+        setDataSelectedMenu(newState);
       }
-      const newState = dataSelectedMenu.map((item) => {
-        if (item.menuId === menuId) {
-          var totalNumberMenu = item.menuAmount + numberMenu;
-          setTotalBillPrice(temp => {
-            return temp += (item.menuTotalPrice) * numberMenu
+      else {
+        const tempListMenuPrice = dataListMenu.filter((element) => {
+          if (element._id === menuId) {
+            return element.menuPrice
+          }
+        })
+        var dataSelected = []
+        dataSelectedMenuOption.map(item => {
+          menuOption.map(itemOption => {
+            if (item.checkedId === itemOption) {
+              dataSelected = [...dataSelected, item.checkedText]
+            }
           })
-          return { ...item, menuAmount: totalNumberMenu };
-        }
-        return item;
-      });
-      setDataSelectedMenu(newState);
+        })
+        let tempDataPrice = []
+        dataSelected.forEach((tempDataSelected) => {
+          if (Array.isArray(tempDataSelected)) {
+            tempDataSelected.map((tempOfTempDataSelected) => {
+              tempDataPrice.push(tempOfTempDataSelected)
+            })
+          }
+          else if (tempDataSelected !== "") {
+            tempDataPrice.push(tempDataSelected)
+          }
+          
+        })
+        let tempPrice = 0
+        tempDataPrice.map((tempData) => {
+          tempPrice += (dataListMenuOptionChoice.find(temp => temp.menuOptionChoiceName === tempData)).menuOptionChoicePrice
+        })
+        // console.log(tempPrice)
+        // console.log(tempListMenuPrice[0].menuPrice)
+        setDataSelectedMenu((prev) => [
+          ...prev,
+          {
+            menuName: menuName,
+            menuId: menuId,
+            menuAmount: numberMenu,
+            menuMemo: menuMemo,
+            menuOption: dataSelected,
+            menuPrice: tempListMenuPrice[0].menuPrice,
+            menuTotalPrice: tempListMenuPrice[0].menuPrice + tempPrice,
+          },
+        ]);
+        setTotalBillPrice(item => {
+          return item += (tempListMenuPrice[0].menuPrice + tempPrice) * numberMenu
+        })
+      }
+      
     } else {
       const tempListMenuPrice = dataListMenu.filter((element) => {
         if (element._id === menuId) {
