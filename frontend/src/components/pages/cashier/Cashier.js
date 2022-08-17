@@ -159,6 +159,12 @@ const Cashier = () => {
   };
 
   const handleClickMenuAddSelect = (menuName, menuId, numberMenu, menuMemo, menuOption) => {
+    console.log(menuOption)
+    let checkedConditionSelectedMenu = dataSelectedMenu.find((element) => {
+      return element.menuId === menuId;
+    })
+    console.log(dataSelectedMenuOption)
+    console.log(checkedConditionSelectedMenu)
     if (
       dataSelectedMenu.find((element) => {
         return element.menuId === menuId;
@@ -202,8 +208,6 @@ const Cashier = () => {
         
       })
       let tempPrice = 0
-      console.log(dataListMenuOptionChoice)
-      console.log(tempDataPrice)
       tempDataPrice.map((tempData) => {
         tempPrice += (dataListMenuOptionChoice.find(temp => temp.menuOptionChoiceName === tempData)).menuOptionChoicePrice
       })
