@@ -38,6 +38,7 @@ const Cashier = () => {
   const [dataModalDelete, setDataModalDelete] = useState({
     menuName: "",
     menuId: "",
+    menuOption: "",
   });
   const [numberMenu, setNumberMenu] = useState(1);
 
@@ -166,8 +167,8 @@ const Cashier = () => {
     setShowModalDelete(false);
   };
 
-  const handleShowModalDelete = (menuName, menuId) => {
-    setDataModalDelete({ menuName: menuName, menuId: menuId });
+  const handleShowModalDelete = (menuName, menuId, menuOption) => {
+    setDataModalDelete({ menuName: menuName, menuId: menuId, menuOption: menuOption });
     setShowModalDelete(true);
   };
 
@@ -388,9 +389,10 @@ const Cashier = () => {
     setDataListMenuShow(dataListMenu);
   };
 
-  const handleRemoveSelectedMenu = (menuId) => {
+  const handleRemoveSelectedMenu = (menuId, menuOption) => {
+    console.log("menuOption", menuOption)
     const newStateRemove = dataSelectedMenu.filter(
-      (item) => item.menuId !== menuId
+      (item) => item.menuId !== menuId || !checkArrayIsSame(menuOption, item.menuOption)
     );
     let tempMenuPrice = dataSelectedMenu.find(item => item.menuId === menuId)
     setTotalBillPrice(temp => {
@@ -575,7 +577,7 @@ const Cashier = () => {
                           size="sm"
                           variant="danger"
                           onClick={() =>
-                            handleShowModalDelete(item.menuName, item.menuId)
+                            handleShowModalDelete(item.menuName, item.menuId, item.menuOption)
                           }
                         >
                           <BsFillTrashFill /> ลบเมนู
@@ -691,7 +693,7 @@ const Cashier = () => {
           </Button>
           <Button
             variant="danger"
-            onClick={() => handleRemoveSelectedMenu(dataModalDelete.menuId)}
+            onClick={() => handleRemoveSelectedMenu(dataModalDelete.menuId, dataModalDelete.menuOption)}
           >
             ลบเมนู
           </Button>
