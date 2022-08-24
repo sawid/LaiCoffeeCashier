@@ -191,8 +191,6 @@ const Cashier = () => {
         return element.menuId === menuId;
       })
     ) {
-      console.log("dataSelect", dataSelectedMenu)
-      
       var tempDataSelectedMenuOption = dataSelectedMenuOption.map((element) => {
         return element.checkedText
       })
@@ -200,11 +198,8 @@ const Cashier = () => {
       var tempDataSelectedConditionCheck = dataSelectedMenu.filter((element) => {
         return element.menuId === menuId && checkArrayIsSame(element.menuOption, tempDataSelectedMenuOption);
       })
-      console.log("tempDataSelectedConditionCheck", tempDataSelectedConditionCheck)
-      console.log("tempDataSelectedMenuOption", tempDataSelectedMenuOption)
       // console.log(checkArrayIsSame(tempDataSelectedConditionCheck.menuOption, tempDataSelectedMenuOption))
       if (tempDataSelectedConditionCheck.length === 0) {
-        console.log("do log 1")
         const tempListMenuPrice = dataListMenu.filter((element) => {
           if (element._id === menuId) {
             return element.menuPrice
@@ -252,9 +247,14 @@ const Cashier = () => {
           return item += (tempListMenuPrice[0].menuPrice + tempPrice) * numberMenu
         })
       }
-      else if (checkArrayIsSame(tempDataSelectedConditionCheck[0].menuOption, tempDataSelectedMenuOption)) {
+      else if (checkArrayIsSame(tempDataSelectedConditionCheck[0].menuOption, tempDataSelectedMenuOption) && (tempDataSelectedConditionCheck[0].menuMemo === dataMenuMemo.menuMemo)) {
+        console.log(tempDataSelectedConditionCheck[0].menuMemo)
+        console.log(dataMenuMemo.menuMemo)
+        // if (tempDataSelectedConditionCheck[0].menuMemo !== dataMenuMemo.menuMemo) {
+          // return
+        // }
         const newState = dataSelectedMenu.map((item) => {
-          if (item.menuId === menuId && checkArrayIsSame(item.menuOption, tempDataSelectedMenuOption)) {
+          if (item.menuId === menuId && checkArrayIsSame(item.menuOption, tempDataSelectedMenuOption) && (item.menuMemo === dataMenuMemo.menuMemo)) {
             var totalNumberMenu = item.menuAmount + numberMenu;
             setTotalBillPrice(temp => {
               return temp += (item.menuTotalPrice) * numberMenu
