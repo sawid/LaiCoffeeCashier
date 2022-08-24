@@ -39,6 +39,7 @@ const Cashier = () => {
     menuName: "",
     menuId: "",
     menuOption: "",
+    menuMemo: "",
   });
   const [numberMenu, setNumberMenu] = useState(1);
 
@@ -167,8 +168,8 @@ const Cashier = () => {
     setShowModalDelete(false);
   };
 
-  const handleShowModalDelete = (menuName, menuId, menuOption) => {
-    setDataModalDelete({ menuName: menuName, menuId: menuId, menuOption: menuOption });
+  const handleShowModalDelete = (menuName, menuId, menuOption, menuMemo) => {
+    setDataModalDelete({ menuName: menuName, menuId: menuId, menuOption: menuOption, menuMemo: menuMemo });
     setShowModalDelete(true);
   };
 
@@ -389,10 +390,10 @@ const Cashier = () => {
     setDataListMenuShow(dataListMenu);
   };
 
-  const handleRemoveSelectedMenu = (menuId, menuOption) => {
+  const handleRemoveSelectedMenu = (menuId, menuOption, menuMemo) => {
     console.log("menuOption", menuOption)
     const newStateRemove = dataSelectedMenu.filter(
-      (item) => item.menuId !== menuId || !checkArrayIsSame(menuOption, item.menuOption)
+      (item) => item.menuId !== menuId || !checkArrayIsSame(menuOption, item.menuOption) || item.menuMemo !== menuMemo
     );
     let tempMenuPrice = dataSelectedMenu.find(item => item.menuId === menuId)
     setTotalBillPrice(temp => {
@@ -577,7 +578,7 @@ const Cashier = () => {
                           size="sm"
                           variant="danger"
                           onClick={() =>
-                            handleShowModalDelete(item.menuName, item.menuId, item.menuOption)
+                            handleShowModalDelete(item.menuName, item.menuId, item.menuOption, item.menuMemo)
                           }
                         >
                           <BsFillTrashFill /> ลบเมนู
@@ -693,7 +694,7 @@ const Cashier = () => {
           </Button>
           <Button
             variant="danger"
-            onClick={() => handleRemoveSelectedMenu(dataModalDelete.menuId, dataModalDelete.menuOption)}
+            onClick={() => handleRemoveSelectedMenu(dataModalDelete.menuId, dataModalDelete.menuOption, dataModalDelete.menuMemo)}
           >
             ลบเมนู
           </Button>
