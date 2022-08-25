@@ -9,6 +9,7 @@ import {
   Form,
   Badge,
 } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import { BsFillTrashFill } from "react-icons/bs";
 import InputSpinner from "react-bootstrap-input-spinner";
 import { listMenu } from "../../functions/menu";
@@ -490,10 +491,22 @@ const Cashier = () => {
   return (
     <div>
       <Container fluid={true}>
-        <Row>
+        <Row className="mx-1">
           <Col md={8} className="mt-2">
             <Row>
+              <Col className="my-2">
+                <h3 className=""> <b>เลือก</b> หมวดหมู่ของเมนู</h3>
+              </Col>
+            </Row>
+            
+            
+            <Row>
               <Col>
+              <Link style={{ textDecoration: "none" }} to="/">
+                <Button variant="danger" size="lg">กลับหน้าหลัก</Button>
+              </Link>
+                
+                {"   "}
                 <Button
                   variant="primary"
                   size="lg"
@@ -516,7 +529,12 @@ const Cashier = () => {
                 ))}
               </Col>
             </Row>
-            <Row className="mt-2">
+            <Row className="my-3">
+              <Col >
+                <h3 className=""> <b>เลือก</b> เมนู</h3>
+              </Col>
+            </Row>
+            <Row className="">
               {dataListMenuShow.map((item, index) => (
                 <Col md={2}>
                   <Card
@@ -536,8 +554,12 @@ const Cashier = () => {
             </Row>
           </Col>
           <Col className="mt-2" md={4}>
+          <Row className="my-3">
+              <Col >
+                <h3 className=""> <b>สรุปเมนู</b></h3>
+              </Col>
+            </Row>
             <Card border="secondary" key={"Light"}>
-              <Card.Header>สรุปบิล</Card.Header>
               <Card.Body>
                 <Card.Title> รายการอาหาร </Card.Title>
                 {Object.keys(dataSelectedMenu).length === 0 ? (
@@ -587,8 +609,16 @@ const Cashier = () => {
                     </Row>
                   </Card.Text>
                 ))}
-
-                <Card.Title> สรุปรายการ </Card.Title>
+                
+                <Card>
+                  <Card.Body>
+                  <Card.Title> ระบบสมาชิก </Card.Title>
+                  <Card.Text>
+                    <b>ชื่อ</b>  สวิตต์ ลิ้มเกียรติสถาพร <b>แต้มสะสม</b> <Badge bg="warning">100 แต้ม</Badge> 
+                  </Card.Text>
+                  </Card.Body>
+                </Card>
+                <Card.Title className="mt-3"> สรุปรายการ </Card.Title>
                 <Card.Text> ราคาสุทธิ <Badge bg="success">{totalBillPrice}</Badge> บาท</Card.Text>
               </Card.Body>
             </Card>
