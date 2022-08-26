@@ -392,7 +392,7 @@ const Cashier = () => {
   };
 
   const handleRemoveSelectedMenu = (menuId, menuOption, menuMemo) => {
-    console.log("menuOption", menuOption)
+//     console.log("menuOption", menuOption)
     const newStateRemove = dataSelectedMenu.filter(
       (item) => item.menuId !== menuId || !checkArrayIsSame(menuOption, item.menuOption) || item.menuMemo !== menuMemo
     );
