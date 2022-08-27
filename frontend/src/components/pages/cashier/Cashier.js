@@ -250,8 +250,8 @@ const Cashier = () => {
         })
       }
       else if (checkArrayIsSame(tempDataSelectedConditionCheck[0].menuOption, tempDataSelectedMenuOption) && (tempDataSelectedConditionCheck[0].menuMemo === dataMenuMemo.menuMemo)) {
-        console.log(tempDataSelectedConditionCheck[0].menuMemo)
-        console.log(dataMenuMemo.menuMemo)
+//         console.log(tempDataSelectedConditionCheck[0].menuMemo)
+//         console.log(dataMenuMemo.menuMemo)
         // if (tempDataSelectedConditionCheck[0].menuMemo !== dataMenuMemo.menuMemo) {
           // return
         // }
