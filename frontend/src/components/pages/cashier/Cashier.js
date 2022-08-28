@@ -250,8 +250,8 @@ const Cashier = () => {
         })
       }
       else if (checkArrayIsSame(tempDataSelectedConditionCheck[0].menuOption, tempDataSelectedMenuOption) && (tempDataSelectedConditionCheck[0].menuMemo === dataMenuMemo.menuMemo)) {
-        console.log(tempDataSelectedConditionCheck[0].menuMemo)
-        console.log(dataMenuMemo.menuMemo)
+//         console.log(tempDataSelectedConditionCheck[0].menuMemo)
+//         console.log(dataMenuMemo.menuMemo)
         // if (tempDataSelectedConditionCheck[0].menuMemo !== dataMenuMemo.menuMemo) {
           // return
         // }
@@ -392,7 +392,7 @@ const Cashier = () => {
   };
 
   const handleRemoveSelectedMenu = (menuId, menuOption, menuMemo) => {
-    console.log("menuOption", menuOption)
+//     console.log("menuOption", menuOption)
     const newStateRemove = dataSelectedMenu.filter(
       (item) => item.menuId !== menuId || !checkArrayIsSame(menuOption, item.menuOption) || item.menuMemo !== menuMemo
     );
