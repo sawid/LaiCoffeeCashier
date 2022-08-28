@@ -613,9 +613,24 @@ const Cashier = () => {
                 <Card>
                   <Card.Body>
                   <Card.Title> ระบบสมาชิก </Card.Title>
-                  <Card.Text>
-                    <b>ชื่อ</b>  สวิตต์ ลิ้มเกียรติสถาพร <b>แต้มสะสม</b> <Badge bg="warning">100 แต้ม</Badge> 
-                  </Card.Text>
+                  {/* <Card.Text> */}
+                    {/* <b>ชื่อ</b>  สวิตต์ ลิ้มเกียรติสถาพร <b>แต้มสะสม</b> <Badge bg="warning">100 แต้ม</Badge>  */}
+                  {/* </Card.Text> */}
+                  <Row>
+                    <Col md={9}>
+                    <Form.Control
+                    type=""
+                    id="inputPassword5"
+                    aria-describedby="passwordHelpBlock"
+                    placeholder="ใส่รหัสสมาชิกหรือชื่อสมาชิก"
+                  />
+                    </Col>
+                    <Col>
+                    <Button>ยืนยัน</Button>
+                    </Col>
+                  </Row>
+                  
+                  
                   </Card.Body>
                 </Card>
                 <Card.Title className="mt-3"> สรุปรายการ </Card.Title>
